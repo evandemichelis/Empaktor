@@ -44,13 +44,3 @@ print("Données d'origine:", data)
 print("Données encodées:", encoded_data)
 print("Données décodées:", decoded_data)
 print()
-
-# Exemple 2
-data2 = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"
-encoded_data2 = encode_rle(data2)
-decoded_data2 = decode_rle(encoded_data2)
-print("Exemple 2:")
-print("Données d'origine:", data2)
-print("Données encodées:", encoded_data2)
-print("Données décodées:", decoded_data2)
-print()

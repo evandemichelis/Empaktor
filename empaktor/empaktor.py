@@ -1,11 +1,11 @@
-# empaktor.py
-
 import argparse
 import os
 import tarfile
-from burrows_wheeler import transform_bwt, inverse_bwt
-from huffman import compress_data
-from rle import encode_rle, decode_rle
+import io
+from compression.burrows_wheeler import transform_bwt, inverse_bwt
+from compression.huffman import buildHuffmanTree
+from compression.rle import encode_rle, decode_rle
+
 
 def compress_huffman(archive_name, files):
     """
@@ -24,10 +24,11 @@ def compress_huffman(archive_name, files):
         for file in files:
             with open(file, "r") as f:
                 data = f.read()
-            compressed_data = compress_data(data)
+            compressed_data = buildHuffmanTree(data)
             tarinfo = tarfile.TarInfo(name=os.path.basename(file))
             tarinfo.size = len(compressed_data)
             tar.addfile(tarinfo, fileobj=io.BytesIO(compressed_data.encode()))
+
 
 def decompress_huffman(archive_name):
     """
@@ -44,9 +45,10 @@ def decompress_huffman(archive_name):
         for tarinfo in tar:
             if tarinfo.isreg():
                 file_data = tar.extractfile(tarinfo).read()
-                decompressed_data = decompress_data(file_data)
+                decompressed_data = buildHuffmanTree(file_data.decode())  # Utilisation de la fonction correcte pour la décompression Huffman
                 with open(tarinfo.name, "w") as f:
                     f.write(decompressed_data)
+
 
 def compress_rle(archive_name, files):
     """
@@ -85,7 +87,9 @@ def decompress_rle(archive_name):
         for tarinfo in tar:
             if tarinfo.isreg():
                 file_data = tar.extractfile(tarinfo).read()
+                print(f"Compressed Data for {tarinfo.name}: {file_data}")
                 decompressed_data = decode_rle(file_data)
+                print(f"Decompressed Data for {tarinfo.name}: {decompressed_data}")
                 with open(tarinfo.name, "w") as f:
                     f.write(decompressed_data)
 
@@ -132,16 +136,41 @@ def decompress_bwt(archive_name):
                 with open(tarinfo.name, "w") as f:
                     f.write(original_data)
 
+def extract(archive_name):
+    """
+    Extraction des fichiers d'une archive compressée.
+
+    Parameters:
+    archive_name (str): Le nom de l'archive compressée à extraire.
+
+    Example:
+    archive_name = "compressed.tar.gz"
+    extract(archive_name)
+    """
+    with tarfile.open(archive_name, "r:gz") as tar:
+        tar.extractall()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Empaktor - Compression and Decompression Tool")
     parser.add_argument("archive_name", type=str, help="Name of the archive file")
     parser.add_argument("--compression", type=str, help="Compression algorithm (huffman, rle, bwt)")
-    parser.add_argument("files", type=str, nargs="*", help="List of files to process")
+    parser.add_argument("--files", type=str, nargs="*",
+                        help="List of files to process. If using 'bwt' compression, provide only one file.")
+    parser.add_argument("--extract", action="store_true", help="Extract files from the archive")
 
     args = parser.parse_args()
 
+    if args.extract:
+        extract(args.archive_name)
+        return
+
     if not args.compression or not args.files:
         print("Please specify a compression algorithm and a list of files.")
+        return
+
+    if args.compression == "bwt" and len(args.files) != 1:
+        print("If using 'bwt' compression, provide only one file.")
         return
 
     if args.compression == "huffman":

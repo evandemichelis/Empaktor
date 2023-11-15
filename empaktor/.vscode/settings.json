@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./cmp_burrows",
+        "./cmp_huffman",
+        "./cmp_rle"
+    ]
+}
