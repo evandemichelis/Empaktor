@@ -7,14 +7,12 @@ from heapq import heappop, heappush
 
 def leaf(root):
     return root.left is None and root.right is None
-
-
 # Créé un modèle de feuille portant deux racines
 
 
 class Node:
     def __init__(self, ch, freq, left=None, right=None):
-# __init__ : méthode appelée lors de la création d'une instance pour initialiser des attributs
+        # __init__ : méthode appelée lors de la création d'une instance pour initialiser des attributs
         self.ch = ch
         self.freq = freq
         self.left = left
@@ -22,7 +20,7 @@ class Node:
 # Donnne à un noeud ses attributs
 
     def __lt__(self, other):
-# __lt__ : méthode utilisée pour définir une opération de comparaison "inférieur que" (<) pour les objets d'une classe, avec "other"
+        # __lt__ : méthode utilisée pour définir une opération de comparaison "inférieur que" (<) pour les objets d'une classe, avec "other"
         return self.freq < other.freq
 # Place les caractères les moins fréquents avant les plus fréquents
 
@@ -38,7 +36,7 @@ def encode(root, s, huffman_code):
 
     encode(root.left, s + '0', huffman_code)
     encode(root.right, s + '1', huffman_code)
-# Fonction parcourant l'arbre et rconstruisant le code
+# Fonction parcourant l'arbre et reconstruisant le code
 
 
 def decode(root, index, s):
@@ -80,16 +78,16 @@ def buildHuffmanTree(text):
     huffmanCode = {}
     encode(root, '', huffmanCode)
 
-    print('Characters are:', huffmanCode)
-    print('The original string is:', text)
+    print('Characters are:         ', huffmanCode)
+    print('The original string is: ', text)
 
     s = ''
     for c in text:
         s += huffmanCode.get(c)
 # Encode la chaine d'origine avec les codes de Huffman
 
-    print('The encoded string is:', s)
-    print('The decoded string is:', end='')
+    print('The encoded string is:  ', s)
+    print('The decoded string is:   ', end='')
 
     if leaf(root):
         while root.freq > 0:
@@ -102,9 +100,7 @@ def buildHuffmanTree(text):
 # Décodage de la chaine binaire avec l'arbre de Huffman
 
 
-if __name__ == '__main__':
-
-    text = 'Banana'
-    buildHuffmanTree(text)
-    print(' ')
+text = 'aabbbccdddd'
+buildHuffmanTree(text)
+print('')
 # Exécute le programme avec une chaine de caractères

@@ -1,28 +1,26 @@
-# Algorithme de Burrows-Wheeler
+# Burrows-Wheeler Transformation
 
-## Transformée de Burrows-Wheeler
+This Python script implements the Burrows-Wheeler Transformation, a reversible text transformation used in data compression algorithms. The transformation rearranges characters in a string to improve compression efficiency.
 
-### Prototype
+## Files
+
+- `burrows_wheller.py`: Contains functions for Burrows-Wheeler transformation and its inverse.
+
+## Usage
+
+### Transforming Data
+
+To transform data using Burrows-Wheeler, use the `transform_bwt` function:
+
 ```python
-def transform_bwt(data: str) -> Tuple[str, int]:
-    """
-    Transforme les données en utilisant l'algorithme de Burrows-Wheeler.
+from burrows_wheller import transform_bwt, inverse_bwt
 
-    Parameters:
-        - data (str): Les données à transformer.
-
-    Returns:
-        - Tuple[str, int]: Les données transformées et l'index de la rotation d'origine.
-    """
-    # Implémentation...
-
-# Autres prototypes et explications...
-
-## Exemple d'utilisation
-```python
+# Exemple 1
 data = "banana"
 transformed_data, key = transform_bwt(data)
 original_data = inverse_bwt(transformed_data, key)
-print("Données d'origine:", data)
-print("Transformée de Burrows-Wheeler:", transformed_data)
-print("Données inversées:", original_data)
+
+print("Exemple 1 :")
+print("Données d'origine :", data)
+print("Transformation de Burrows-Wheeler :", transformed_data)
+print("Données inversées :", original_data)
