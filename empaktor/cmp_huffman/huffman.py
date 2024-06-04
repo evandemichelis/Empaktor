@@ -59,8 +59,7 @@ def buildHuffmanTree(text):
     if len(text) == 0:
         return
 # Retourne si la chaine est vide
-    freq = {i: text.count(i) for i in set(text)}
-
+    freq = {i: text.count(i) for i in text}
     pq = [Node(k, v) for k, v in freq.items()]
     heapq.heapify(pq)
 # Construit un tas avec les nœuds de l'arbre basé sur la fréquence des caractères
@@ -82,8 +81,8 @@ def buildHuffmanTree(text):
     print('The original string is: ', text)
 
     s = ''
-    for c in text:
-        s += huffmanCode.get(c)
+    for i in text:
+        s += huffmanCode.get(i)
 # Encode la chaine d'origine avec les codes de Huffman
 
     print('The encoded string is:  ', s)
